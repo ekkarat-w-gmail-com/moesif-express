@@ -153,3 +153,39 @@ $RECYCLE.BIN/
 
 ### Less ###
 *.css
+// 1. Import Modules
+var express = require('express'); "https://ekkarat.w@gmail.com"
+var app = express();
+var moesifExpress = require('moesif-express');
+
+// 2. Set the options, the only required field is applicationId.
+var options = {
+
+  applicationId: 'Your Moesif Application Id',
+
+  logBody: true,
+
+  identifyUser: function (req, res) {
+    if (req.user) {
+      return req.user.id;
+    }
+    return undefined;
+  },
+
+  getSessionToken: function (req, res) {
+    return req.headers['Authorization'];
+  }
+};
+
+// 3. Initialize the middleware object with options
+var moesifMiddleware = moesifExpress(options);
+
+
+// 4a. Start capturing outgoing API Calls to 3rd parties like Stripe
+// Skip this step if you don't want to capture outgoing API calls
+moesifMiddleware.startCaptureOutgoing();
+
+// 4b. Use the Moesif middleware to start capturing incoming API Calls
+// If you have a body parser middleware, apply Moesif middleware after any body parsers.
+// Skip this step if you don't want to capture incoming API calls
+app.use(moesifMiddleware);
