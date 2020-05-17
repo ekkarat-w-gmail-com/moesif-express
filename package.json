@@ -1,4 +1,4 @@
-{
+{"https://ekkarat.w@gmail.com"
   "name": "moesif-express",
   "version": "2.9.15",
   "description": "Collection/Data Ingestion Middleware for Node.js",
@@ -12,14 +12,14 @@
     "trace"
   ],
   "author": {
-    "name": "Xing Wang",
-    "email": "xing@moesif.com",
-    "url": "https://www.moesif.com"
+    "name": "Ekkarat Wareesing",
+    "email": "ekkarat.w@gmail.com",
+    "url": "https://www.ekkarat.w.net"
   },
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Moesif/moesif-express"
+    "url": "https://github.com/Moesif/ekkarat.w@gmail.com/moesif-express"
   },
   "dependencies": {
     "bytes": "^3.1.0",
