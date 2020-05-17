@@ -1,0 +1,64 @@
+# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Node.js CI
+
+on: // 1. Import Modules
+var express = require('express');
+var app = express();
+var moesifExpress = require('moesif-express');
+
+// 2. Set the options, the only required field is applicationId.
+var options = {
+
+  applicationId: 'Your Moesif Application Id',
+
+  logBody: true,
+
+  identifyUser: function (req, res) {
+    if (req.user) {
+      return req.user.id;
+    }
+    return undefined;
+  },
+
+  getSessionToken: function (req, res) {
+    return req.headers['Authorization'];
+  }
+};
+
+// 3. Initialize the middleware object with options
+var moesifMiddleware = moesifExpress(options);
+
+
+// 4a. Start capturing outgoing API Calls to 3rd parties like Stripe
+// Skip this step if you don't want to capture outgoing API calls
+moesifMiddleware.startCaptureOutgoing();
+
+// 4b. Use the Moesif middleware to start capturing incoming API Calls
+// If you have a body parser middleware, apply Moesif middleware after any body parsers.
+// Skip this step if you don't want to capture incoming API calls
+app.use(moesifMiddleware);
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm ci
+    - run: npm run build --if-present
+    - run: npm test
